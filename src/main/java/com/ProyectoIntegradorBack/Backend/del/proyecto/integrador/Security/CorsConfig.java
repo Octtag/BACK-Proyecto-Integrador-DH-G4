@@ -3,21 +3,28 @@ package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
+
+import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
 
     @Bean
-    public CorsFilter corsFilter() {
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+
+        // Cambia esto para reflejar el origen de tu frontend
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:3001"));
+        // Asegúrate de incluir "PUT" o "PATCH" si tu aplicación los necesita
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
+        corsConfiguration.setAllowCredentials(true); // Si necesitas enviar cookies o headers de autorización
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("*"); // Permitir todos los orígenes
-        config.addAllowedHeader("*"); // Permitir todos los headers
-        config.addAllowedMethod("*"); // Permitir todos los métodos
-        source.registerCorsConfiguration("/**", config); // Aplicar la configuración CORS para todas las rutas
-        return new CorsFilter(source);
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+        return source;
     }
 }
-

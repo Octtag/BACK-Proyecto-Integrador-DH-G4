@@ -1,10 +1,10 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
-import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -16,12 +16,13 @@ public class AppUser implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String nombre;
+    private String apellido;
     private String email;
 
     private String username;
-
     private String password;
-
     @Enumerated(EnumType.STRING)
     private AppUserRol rol;
 

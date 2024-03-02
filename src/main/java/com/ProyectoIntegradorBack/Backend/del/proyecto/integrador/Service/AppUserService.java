@@ -24,6 +24,15 @@ public class AppUserService implements UserDetailsService {
         return appUserRepository.save(appUser);
     }
 
+
+    public Boolean existsByEmail(String email){
+        return appUserRepository.existsByEmail(email);
+    }
+
+    public Optional<AppUser> findByEmail(String email){
+        return Optional.ofNullable(appUserRepository.findByEmail(email).orElse(null));
+    }
+
     public Optional<AppUser> findByUsername(String username) {
         return appUserRepository.findByUsername(username);
     }

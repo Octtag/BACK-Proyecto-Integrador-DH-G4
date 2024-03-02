@@ -1,7 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;

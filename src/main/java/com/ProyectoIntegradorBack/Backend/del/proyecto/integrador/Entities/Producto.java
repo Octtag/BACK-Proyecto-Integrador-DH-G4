@@ -1,8 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
-import jakarta.persistence.*;
-
-import java.util.List;
+import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class Producto {

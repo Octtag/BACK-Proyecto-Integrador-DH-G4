@@ -1,7 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
-import jakarta.persistence.*;
-
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity

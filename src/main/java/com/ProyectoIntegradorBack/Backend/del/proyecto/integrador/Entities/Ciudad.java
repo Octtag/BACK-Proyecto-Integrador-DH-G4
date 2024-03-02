@@ -1,8 +1,8 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
-import jakarta.persistence.*;
 import lombok.Data;
 
+import javax.persistence.*;
 import java.util.Objects;
 
 @Data
@@ -13,9 +13,7 @@ public class Ciudad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nombreCiudad;
-
     private String zipCode;
 
     @ManyToOne(fetch = FetchType.LAZY)

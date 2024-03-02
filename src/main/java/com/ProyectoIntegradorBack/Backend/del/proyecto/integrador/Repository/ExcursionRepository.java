@@ -4,8 +4,11 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excur
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
 
+    List<Excursion> findTop3ByOrderByIdDesc();
 }
 
