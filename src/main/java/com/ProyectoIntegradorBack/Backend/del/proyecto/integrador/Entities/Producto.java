@@ -1,8 +1,11 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @MappedSuperclass
+@Data
 public abstract class Producto {
 
     @Id

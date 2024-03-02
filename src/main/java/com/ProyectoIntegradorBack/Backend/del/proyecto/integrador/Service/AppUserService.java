@@ -2,6 +2,7 @@ package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.AppUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,6 +16,7 @@ public class AppUserService implements UserDetailsService {
 
     private final AppUserRepository appUserRepository;
 
+    @Autowired
     public AppUserService(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
     }
@@ -23,7 +25,6 @@ public class AppUserService implements UserDetailsService {
     public AppUser guardarAppUser(AppUser appUser){
         return appUserRepository.save(appUser);
     }
-
 
     public Boolean existsByEmail(String email){
         return appUserRepository.existsByEmail(email);
@@ -40,5 +41,9 @@ public class AppUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
+    }
+
+    public AppUser findById(Long vendedorId) {
+        return appUserRepository.findById(vendedorId).get();
     }
 }

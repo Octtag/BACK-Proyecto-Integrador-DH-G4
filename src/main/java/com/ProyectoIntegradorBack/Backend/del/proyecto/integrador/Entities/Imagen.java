@@ -1,9 +1,12 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Data
 public class Imagen {
 
     @Id

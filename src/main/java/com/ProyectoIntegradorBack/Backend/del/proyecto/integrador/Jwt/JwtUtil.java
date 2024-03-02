@@ -1,15 +1,15 @@
-package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security;
+package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Jwt;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.AppUserService;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -17,13 +17,18 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtUtil {
 
-    @Autowired
-    AppUserService simpleUserService;
+    private final AppUserService simpleUserService;
 
     @Value("${JWT_SECRET_KEY}")
     private String SECRET_KEY;
 
     private Algorithm ALGORITHM;
+
+    @Autowired
+    public JwtUtil(AppUserService simpleUserService, Algorithm algorithm) {
+        this.simpleUserService = simpleUserService;
+        ALGORITHM = algorithm;
+    }
 
     @PostConstruct
     public void init() {

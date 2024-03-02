@@ -1,5 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "excursiones")
+@Data
 public class Excursion extends Producto {
 
     private String destino;
@@ -19,7 +22,7 @@ public class Excursion extends Producto {
     private Compra compra;
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Imagen> imagenesUrl;
+    private List<Imagen> imagenes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendedor_id")
@@ -33,8 +36,13 @@ public class Excursion extends Producto {
     @JoinColumn(name = "id_ciudad", nullable = false)
     private Ciudad ciudad; // Relación con la entidad Ciudad.
 
+
+
+
     public Excursion() {
     }
+
+
 
     @Override
     public String toString() {

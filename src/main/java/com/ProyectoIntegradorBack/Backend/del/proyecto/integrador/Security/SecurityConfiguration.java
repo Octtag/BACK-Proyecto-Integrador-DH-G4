@@ -1,6 +1,8 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Jwt.JwtFilter;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.AppUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,14 +24,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final AppUserService appUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JwtFilter jwtFilter;
-    private final CustomHeaderValidatorFilter customHeaderValidatorFilter;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    public SecurityConfiguration(AppUserService appUserService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtFilter jwtFilter, CustomHeaderValidatorFilter customHeaderValidatorFilter, CorsConfigurationSource corsConfigurationSource) {
+    @Autowired
+    public SecurityConfiguration(AppUserService appUserService, BCryptPasswordEncoder bCryptPasswordEncoder, JwtFilter jwtFilter, CorsConfigurationSource corsConfigurationSource) {
         this.appUserService = appUserService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.jwtFilter = jwtFilter;
-        this.customHeaderValidatorFilter = customHeaderValidatorFilter;
         this.corsConfigurationSource = corsConfigurationSource;
     }
 

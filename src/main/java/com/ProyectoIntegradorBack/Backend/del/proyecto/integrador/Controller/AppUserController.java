@@ -5,7 +5,7 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.Authentic
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AuthenticationResponse;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUserRol;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security.JwtUtil;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Jwt.JwtUtil;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security.PasswordEncoder;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.AppUserService;
 import org.springframework.http.HttpStatus;

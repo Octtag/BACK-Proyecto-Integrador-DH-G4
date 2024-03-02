@@ -32,7 +32,7 @@ public class Hotel extends Producto{
     private AppUser vendedor;
 
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Imagen> imagenesUrl;
+    private List<Imagen> imagenes;
 
     private String urlWeb;
 
