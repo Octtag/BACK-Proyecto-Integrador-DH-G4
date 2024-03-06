@@ -91,17 +91,17 @@ public class AppUserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> loguinYCrearToken(@RequestBody AuthenticationRequest authenticationRequest) {
-
+        String rol;
+        String nombreCompleto;
         try {
             AppUser appUser = appUserService.findByEmail(authenticationRequest.getEmail()).get();
+            rol = String.valueOf(appUser.getRol());
+            nombreCompleto =  appUser.getNombre() + ' ' + appUser.getApellido();
 
             if (appUser == null){
                 // En lugar de lanzar una excepción, devuelve una respuesta con un código de estado 401 y un mensaje claro.
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No existe un usuario con ese email");
             }
-
-
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(), authenticationRequest.getPassword()));
         } catch (BadCredentialsException e) {
             // En lugar de lanzar una excepción, devuelve una respuesta con un código de estado 401 y un mensaje claro.
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Email o contraseña incorrecta");
@@ -110,7 +110,7 @@ public class AppUserController {
         final String jwt = jwtUtil.createToken(authenticationRequest.getEmail());
         System.out.println(jwt);
 
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+        return ResponseEntity.ok(new AuthenticationResponse(jwt, rol, nombreCompleto));
     }
 
 }

@@ -36,7 +36,7 @@ public class VuelosController {
         vueloService.mapVueloDTOToVuelo(vueloDTO, nuevoVuelo);
 
         List<Imagen> imagenes = new ArrayList<>();
-        for (MultipartFile file : vueloDTO.getImagenes()) {
+        /*for (MultipartFile file : vueloDTO.getImagenes()) {
             if (file != null && !file.isEmpty()) {
                 String imageUrl = awsService.uploadEventImage(file);
                 Imagen imagen = new Imagen();
@@ -44,7 +44,7 @@ public class VuelosController {
                 // Assuming you set other necessary properties of Imagen here.
                 imagenes.add(imagen);
             }
-        }
+        }*/
         nuevoVuelo.setImagenesUrl(imagenes);
         Vuelo vueloGuardado = vueloService.guardarVuelo(nuevoVuelo);
         return new ResponseEntity<>(vueloGuardado, HttpStatus.CREATED);

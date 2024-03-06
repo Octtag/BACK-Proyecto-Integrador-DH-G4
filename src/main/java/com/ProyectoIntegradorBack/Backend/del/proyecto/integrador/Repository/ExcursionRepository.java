@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
 
-    List<Excursion> findTop3ByOrderByIdDesc();
+    List<Excursion> findByOrderByIdAsc();
 }
 

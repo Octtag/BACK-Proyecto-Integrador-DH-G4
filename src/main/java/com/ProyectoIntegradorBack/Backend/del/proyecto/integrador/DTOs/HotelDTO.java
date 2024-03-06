@@ -3,6 +3,8 @@ package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 public class HotelDTO {
     private String nombre;
@@ -14,5 +16,5 @@ public class HotelDTO {
     private String telefono;
     private String categoria;
     private String urlWeb;
-    private MultipartFile[] imagenes;
+    private List<ImagenDTO> imagenes;
 }

@@ -43,7 +43,7 @@ public class HotelController {
         nuevoHotel.setUrlWeb(hotelDTO.getUrlWeb());
 
         List<Imagen> imagenes = new ArrayList<>();
-        for (MultipartFile file : hotelDTO.getImagenes()) {
+        /*for (MultipartFile file : hotelDTO.getImagenes()) {
             if (file != null && !file.isEmpty()) {
                 String imageUrl = awsService.uploadEventImage(file);
                 Imagen imagen = new Imagen();
@@ -51,7 +51,7 @@ public class HotelController {
                 // Assuming you set other necessary properties of Imagen here.
                 imagenes.add(imagen);
             }
-        }
+        }*/
         nuevoHotel.setImagenes(imagenes);
 
         // Suponiendo que la lógica para establecer los demás campos y relaciones se maneje en el servicio

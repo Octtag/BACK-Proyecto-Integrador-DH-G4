@@ -45,15 +45,15 @@ public class ExcursionController {
         nuevaExcursion.setItinerario(excursionDTO.getItinerario());
 
         List<Imagen> imagenes = new ArrayList<>();
-        for (MultipartFile file : excursionDTO.getImagenes()) {
-            if (file != null && !file.isEmpty()) {
+      /*  for (Imagen file : excursionDTO.getImagenes()) {
+            if (file != null ) {
                 String imageUrl = awsService.uploadEventImage(file);
                 Imagen imagen = new Imagen();
                 imagen.setUrl(imageUrl);
                 // Assuming you set other necessary properties of Imagen here.
                 imagenes.add(imagen);
             }
-        }
+        }*/
         nuevaExcursion.setImagenes(imagenes);
 
         // Suponiendo que la lógica para establecer los demás campos y relaciones se maneje en el servicio

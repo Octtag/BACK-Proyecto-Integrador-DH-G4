@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface VueloRepository extends JpaRepository<Vuelo, Long> {
-    List<Vuelo> findTop3ByOrderByIdDesc();
+    List<Vuelo> findByOrderByIdDesc();
 }

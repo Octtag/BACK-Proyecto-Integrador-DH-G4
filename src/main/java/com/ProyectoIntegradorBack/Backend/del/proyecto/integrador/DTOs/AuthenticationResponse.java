@@ -6,8 +6,12 @@ import lombok.Data;
 public class AuthenticationResponse {
 
     private final String jwt;
-    public AuthenticationResponse(String jwt) {
+    private final String rol;
+    private final String nombreCompleto;
+    public AuthenticationResponse(String jwt, String rol, String nombreCompleto) {
         this.jwt = jwt;
+        this.rol = rol;
+        this.nombreCompleto =  nombreCompleto;
     }
 
     public String getJwt() {
