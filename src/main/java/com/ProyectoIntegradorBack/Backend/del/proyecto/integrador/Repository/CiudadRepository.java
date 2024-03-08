@@ -4,4 +4,5 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Ciuda
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CiudadRepository extends JpaRepository<Ciudad,Long>{
+    Ciudad findTop1ByOrderByIdDesc();
 }

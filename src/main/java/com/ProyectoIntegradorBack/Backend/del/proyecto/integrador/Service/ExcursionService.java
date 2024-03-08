@@ -20,4 +20,9 @@ public class ExcursionService {
     public Excursion guardarExcursion(Excursion excursion) {
         return excursionRepository.save(excursion);
     }
+
+    @Transactional
+    public Excursion getLastExcursion() {
+        return excursionRepository.findTop1ByOrderByIdDesc();
+    }
 }

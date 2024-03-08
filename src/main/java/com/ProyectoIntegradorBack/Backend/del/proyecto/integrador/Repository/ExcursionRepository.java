@@ -10,5 +10,7 @@ import java.util.List;
 public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
 
     List<Excursion> findByOrderByIdAsc();
+
+    Excursion findTop1ByOrderByIdDesc();
 }
 

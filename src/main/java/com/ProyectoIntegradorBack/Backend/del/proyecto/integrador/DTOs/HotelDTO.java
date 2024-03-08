@@ -7,6 +7,7 @@ import java.util.List;
 
 @Data
 public class HotelDTO {
+    private Long id;
     private String nombre;
     private String descripcion;
     private Double precio;

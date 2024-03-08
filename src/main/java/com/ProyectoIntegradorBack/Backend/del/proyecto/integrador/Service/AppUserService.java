@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,4 +47,14 @@ public class AppUserService implements UserDetailsService {
     public AppUser findById(Long vendedorId) {
         return appUserRepository.findById(vendedorId).get();
     }
+
+    public List<AppUser> getAllUsers(){
+        return appUserRepository.findByOrderByIdAsc();
+    }
+
+    @Transactional
+    public AppUser updateUser(AppUser user) {
+        return appUserRepository.save(user);
+    }
+
 }

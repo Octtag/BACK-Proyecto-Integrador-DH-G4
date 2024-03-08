@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class VueloDTO {
+    private Long id;
     private String aerolinea;
     private String origen;
     private LocalDateTime fechaSalida;

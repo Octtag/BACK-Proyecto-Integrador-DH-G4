@@ -41,7 +41,7 @@ public class ProductoController {
         List<HotelDTO> hotelesDTO = hotelesAleatorios.stream()
                 .map(hotel -> {
                      HotelDTO h = new HotelDTO();
-
+                     h.setId(hotel.getId());
                      h.setNombre(hotel.getNombre());
                      h.setDescripcion(hotel.getDescripcion());
                      h.setPrecio(hotel.getPrecio());
@@ -62,6 +62,7 @@ public class ProductoController {
         List<VueloDTO> vuelosDTO = vuelosAleatorios.stream()
                 .map(vuelo -> {
                     VueloDTO h = new VueloDTO();
+                    h.setId(vuelo.getId());
                     h.setAerolinea(vuelo.getAerolinea());
                     h.setOrigen(vuelo.getOrigen());
                     h.setFechaSalida(vuelo.getFechaSalida());
@@ -81,7 +82,7 @@ public class ProductoController {
                     h.setDescripcion(excursion.getDescripcion());
                     h.setDestino(excursion.getDestino());
                     h.setPrecio(excursion.getPrecio());
-                    h.setFechaFin(excursion.getFechaInicio());
+                    h.setFechaInicio(excursion.getFechaInicio());
                     h.setFechaFin(excursion.getFechaFin());
                     h.setItinerario(excursion.getItinerario());
                     List<ImagenDTO> imagenes= getImages(excursion.getImagenes());

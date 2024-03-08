@@ -1,10 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AppUserDto;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AuthenticationRequest;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AuthenticationResponse;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUserRol;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.*;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Jwt.JwtUtil;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Security.PasswordEncoder;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.AppUserService;
@@ -15,10 +12,11 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/usuarios")
@@ -111,6 +109,33 @@ public class AppUserController {
         System.out.println(jwt);
 
         return ResponseEntity.ok(new AuthenticationResponse(jwt, rol, nombreCompleto));
+    }
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<AppUserDto>> obtenerUsuarios() {
+        List<AppUser> usuarios = appUserService.getAllUsers();
+        List<AppUserDto> usuariosDTO = usuarios.stream()
+                .map(usuario -> {
+                    AppUserDto h = new AppUserDto();
+                    h.setId(usuario.getId());
+                    h.setNombre(usuario.getNombre());
+                    h.setApellido(usuario.getApellido());
+                    h.setEmail(usuario.getEmail());
+                    h.setRol(String.valueOf(usuario.getRol()));
+                    return h;
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(usuariosDTO);
+    }
+
+    @PostMapping("/udpate")
+    public ResponseEntity<AppUser> actualizarUsuario(@RequestBody AppUserDto user) throws IOException {
+        AppUser usuario = appUserService.findById(user.getId());
+
+        usuario.setRol(AppUserRol.valueOf(user.getRol()));
+        AppUser u=appUserService.updateUser(usuario);
+        return new ResponseEntity<>(u, HttpStatus.CREATED);
     }
 
 }
