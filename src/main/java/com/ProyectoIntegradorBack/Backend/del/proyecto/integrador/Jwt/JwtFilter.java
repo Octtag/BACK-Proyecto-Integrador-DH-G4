@@ -18,10 +18,14 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
 
+    private final JwtUtil jwtUtil;
+    private final AppUserService simpleUserService;
+
     @Autowired
-    JwtUtil jwtUtil;
-    @Autowired
-    AppUserService simpleUserService;
+    public JwtFilter(JwtUtil jwtUtil, AppUserService simpleUserService) {
+        this.jwtUtil = jwtUtil;
+        this.simpleUserService = simpleUserService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest,
@@ -31,22 +35,22 @@ public class JwtFilter extends OncePerRequestFilter {
         //Validar que sea un header autorization valido
         String authHeader = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
         //Validar que el jwt sea valido<<
         String jwt = authHeader.split(" ")[1].trim();
 
-        if (!this.jwtUtil.esValido(jwt)){
+        if (!this.jwtUtil.esValido(jwt)) {
             System.out.println("EL JWT ES INVALIDO O NO ESTA.");
-            filterChain.doFilter(httpServletRequest,httpServletResponse);
+            filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
 
-        String username = this.jwtUtil.getUsername(jwt);
-        User usuario = (User) this.simpleUserService.loadUserByUsername(username);
+        String email = this.jwtUtil.getEmail(jwt);
+        User usuario = (User) this.simpleUserService.loadUserByUsername(email);
         System.out.println(usuario);
 
         //Cargar el usuario al contexto de seguridad
@@ -56,6 +60,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(httpServletRequest,httpServletResponse);
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 }

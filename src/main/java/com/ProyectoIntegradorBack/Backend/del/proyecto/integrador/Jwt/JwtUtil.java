@@ -6,7 +6,6 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -19,15 +18,12 @@ public class JwtUtil {
 
     private final AppUserService simpleUserService;
 
-    @Value("${JWT_SECRET_KEY}")
-    private String SECRET_KEY;
-
+    private String SECRET_KEY = "atilio";
     private Algorithm ALGORITHM;
 
     @Autowired
-    public JwtUtil(AppUserService simpleUserService, Algorithm algorithm) {
+    public JwtUtil(AppUserService simpleUserService) {
         this.simpleUserService = simpleUserService;
-        ALGORITHM = algorithm;
     }
 
     @PostConstruct
@@ -73,7 +69,7 @@ public class JwtUtil {
 
     public Optional<AppUser> obtenerUsuarioDesdeToken(String authorizationHeader){
         String jwt = authorizationHeader.substring(7);
-        String username = getUsername(jwt);
+        String username = getEmail(jwt);
 
         Optional<AppUser> simpleUser;
         simpleUser = simpleUserService.findByUsername(username);
@@ -94,7 +90,7 @@ public class JwtUtil {
         }
     }
 
-    public String getUsername(String jwt) {
+    public String getEmail(String jwt) {
         try {
             if (jwt == null || jwt.trim().isEmpty()) {
                 // Loguear o manejar la ausencia de token si es necesario
@@ -110,7 +106,6 @@ public class JwtUtil {
             return null;
         }
     }
-
 
     public String createTokenCarrito(String carrito_id){
         System.out.println("Creando el token");
