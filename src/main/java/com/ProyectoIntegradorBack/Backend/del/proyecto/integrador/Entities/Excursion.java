@@ -16,28 +16,19 @@ public class Excursion extends Producto {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private String itinerario;
+    private Boolean esFavorito;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compra_id")
-    private Compra compra;
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendedor_id")
-    private AppUser vendedor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pais", nullable = false)
-    private Pais pais;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad", nullable = false)
     private Ciudad ciudad; // Relación con la entidad Ciudad.
 
-
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
     public Excursion() {
     }

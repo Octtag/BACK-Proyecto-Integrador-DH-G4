@@ -4,10 +4,8 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.Excursion
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.HotelDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.VueloDTO;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Hotel;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Imagen;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Vuelo;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.CategoriaRepository;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.ExcursionRepository;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.HotelRepository;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.VueloRepository;
@@ -34,7 +32,6 @@ public class ProductoController {
 
     @Autowired
     private ExcursionRepository excursionRepository;
-
     @GetMapping("/aleatorios")
     public ResponseEntity<Map<String, List<?>>> obtenerProductosAleatorios() {
         List<Hotel> hotelesAleatorios = hotelRepository.findByOrderByIdDesc();
@@ -85,6 +82,8 @@ public class ProductoController {
                     h.setFechaInicio(excursion.getFechaInicio());
                     h.setFechaFin(excursion.getFechaFin());
                     h.setItinerario(excursion.getItinerario());
+                    h.setIdCategoria(excursion.getCategoria().getId());
+                    h.setEsFavorito(excursion.getEsFavorito());
                     List<ImagenDTO> imagenes= getImages(excursion.getImagenes());
                     h.setImagenes(imagenes);
 

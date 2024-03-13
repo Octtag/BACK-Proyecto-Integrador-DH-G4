@@ -8,10 +8,7 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Util.AwsServic
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -34,6 +31,8 @@ public class ExcursionController {
     @Autowired
     private CompraRepository compraRepository;
     @Autowired
+    private CategoriaRepository categoriaRepository;
+    @Autowired
     public ExcursionController(ExcursionService excursionService, AwsService awsService) {
         this.excursionService = excursionService;
         this.awsService = awsService;
@@ -55,14 +54,10 @@ public class ExcursionController {
         nuevaExcursion.setItinerario(excursionDTO.getItinerario());
 
         Ciudad ciudad = ciudadRepository.findTop1ByOrderByIdDesc();
-        Pais pais = paisRepository.findTop1ByOrderByIdDesc();
-        AppUser appUser = appUserRepository.findTop1ByOrderByIdDesc();
-        Compra compra = compraRepository.findTop1ByOrderByIdDesc();
+        Categoria categoria = categoriaRepository.getById(excursionDTO.getIdCategoria());
 
         nuevaExcursion.setCiudad(ciudad);
-        nuevaExcursion.setCompra(compra);
-        nuevaExcursion.setPais(pais);
-        nuevaExcursion.setVendedor(appUser);
+        nuevaExcursion.setCategoria(categoria);
 
         List<Imagen> imagenes = new ArrayList<>();
       /*  for (Imagen file : excursionDTO.getImagenes()) {
@@ -79,5 +74,16 @@ public class ExcursionController {
         // Suponiendo que la lógica para establecer los demás campos y relaciones se maneje en el servicio
         Excursion resultado = excursionService.guardarExcursion(nuevaExcursion);
         return new ResponseEntity<>(resultado, HttpStatus.CREATED);
+    }
+
+
+    @PutMapping("/agregarAFavoritos")
+    public ResponseEntity<Excursion> agregarAFavoritos(@RequestBody ExcursionDTO excursionDTO) throws IOException {
+        Excursion nuevaExcursion = new Excursion();
+        Excursion excursion = excursionService.findById( Long.valueOf(excursionDTO.getId().intValue()));
+        excursion.setEsFavorito(excursionDTO.getEsFavorito());
+
+        excursionService.actualizarExcursion(nuevaExcursion);
+        return new ResponseEntity<>(excursion, HttpStatus.CREATED);
     }
 }

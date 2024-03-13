@@ -17,7 +17,10 @@ public class ExcursionDTO {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private String itinerario;
+    private Long idCategoria;
+    private Boolean esFavorito;
     private List<ImagenDTO> imagenes;
+  //  private List<MultipartFile> imagenes2;
 
 }
 

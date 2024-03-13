@@ -1,5 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.ExcursionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,14 @@ public class ExcursionService {
     public Excursion getLastExcursion() {
         return excursionRepository.findTop1ByOrderByIdDesc();
     }
+
+    public Excursion findById(Long id) {
+        return excursionRepository.findById(id).get();
+    }
+
+    @Transactional
+    public void actualizarExcursion(Excursion excursion) {
+        excursionRepository.update(excursion.getId(),excursion.getEsFavorito());
+    }
+
 }

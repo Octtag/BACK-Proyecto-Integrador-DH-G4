@@ -22,8 +22,9 @@ public class Compra {
     @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vuelo> vuelosComprados;
 
-    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Excursion> excursionesCompradas;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "excursion_id")
+    private Excursion excursion;
 
     private LocalDateTime fechaCompra;
 
