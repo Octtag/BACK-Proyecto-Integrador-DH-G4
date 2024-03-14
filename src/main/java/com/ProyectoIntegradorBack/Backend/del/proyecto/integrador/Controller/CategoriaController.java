@@ -47,4 +47,11 @@ public class CategoriaController {
         return new ResponseEntity<>(resultado, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/eliminarCategoria")
+    public ResponseEntity<Categoria> eliminarCategoria(@RequestBody Categoria categoria) throws IOException {
+        Categoria categoriaEncontrada = categoriaService.findById(categoria.getId());
+        categoriaService.borrarCategoria(categoriaEncontrada);
+        return new ResponseEntity<>(categoriaEncontrada, HttpStatus.CREATED);
+    }
+
 }

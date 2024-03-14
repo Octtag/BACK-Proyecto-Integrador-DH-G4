@@ -1,5 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Categoria;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.CategoriaRepository;
@@ -22,4 +23,14 @@ public class CategoriaService {
     public Categoria guardarCategoria(Categoria categoria) {
         return categoriaRepository.save(categoria);
     }
+
+    @Transactional
+    public void borrarCategoria(Categoria categoria) {
+        categoriaRepository.delete(categoria);
+    }
+
+    public Categoria findById(Long id) {
+        return categoriaRepository.findById(id).get();
+    }
+
 }
