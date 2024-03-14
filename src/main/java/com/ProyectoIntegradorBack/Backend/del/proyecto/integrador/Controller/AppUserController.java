@@ -38,7 +38,6 @@ public class AppUserController {
     @PostMapping("/registrarUsuario")
     public ResponseEntity<?> registrarUsuario(@RequestBody AppUserDto appUserDto) throws Exception {
 
-        System.out.println(appUserDto);
 
         if (appUserService.existsByEmail(appUserDto.getEmail())) {
             return ResponseEntity
@@ -64,7 +63,6 @@ public class AppUserController {
     @PostMapping("/registrarAdmin")
     public ResponseEntity<?> registrarAdmin(@RequestBody AppUserDto appUserDto) throws Exception {
 
-        System.out.println(appUserDto);
 
         if (appUserService.existsByEmail(appUserDto.getEmail())) {
             return ResponseEntity

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class ExcursionService {
 
@@ -31,9 +33,9 @@ public class ExcursionService {
         return excursionRepository.findById(id).get();
     }
 
-    @Transactional
-    public void actualizarExcursion(Excursion excursion) {
-        excursionRepository.update(excursion.getId(),excursion.getEsFavorito());
+    public Optional<Excursion> findByNombre(String nombre) {
+        return excursionRepository.findByNombre(nombre);
     }
+
 
 }

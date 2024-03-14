@@ -16,7 +16,6 @@ public class Excursion extends Producto {
     private LocalDateTime fechaInicio;
     private LocalDateTime fechaFin;
     private String itinerario;
-    private Boolean esFavorito;
 
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)

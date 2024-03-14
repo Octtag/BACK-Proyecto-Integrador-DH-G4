@@ -76,14 +76,15 @@ public class ExcursionController {
         return new ResponseEntity<>(resultado, HttpStatus.CREATED);
     }
 
-
+/*
     @PutMapping("/agregarAFavoritos")
     public ResponseEntity<Excursion> agregarAFavoritos(@RequestBody ExcursionDTO excursionDTO) throws IOException {
-        Excursion nuevaExcursion = new Excursion();
         Excursion excursion = excursionService.findById( Long.valueOf(excursionDTO.getId().intValue()));
-        excursion.setEsFavorito(excursionDTO.getEsFavorito());
+       // excursion.setEsFavorito(excursionDTO.getEsFavorito());
 
         excursionService.actualizarExcursion(nuevaExcursion);
         return new ResponseEntity<>(excursion, HttpStatus.CREATED);
     }
+    */
+
 }
