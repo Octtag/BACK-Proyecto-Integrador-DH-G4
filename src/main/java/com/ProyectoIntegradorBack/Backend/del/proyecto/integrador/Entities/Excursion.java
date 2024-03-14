@@ -29,14 +29,12 @@ public class Excursion extends Producto {
     private AppUser vendedor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pais", nullable = false)
+    @JoinColumn(name = "id_pais")
     private Pais pais;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_ciudad", nullable = false)
+    @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad; // Relación con la entidad Ciudad.
-
-
 
 
     public Excursion() {

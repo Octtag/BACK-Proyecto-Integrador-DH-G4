@@ -18,6 +18,5 @@ public class ExcursionDTO {
     private LocalDateTime fechaFin;
     private String itinerario;
     private List<ImagenDTO> imagenes;
-
 }
 

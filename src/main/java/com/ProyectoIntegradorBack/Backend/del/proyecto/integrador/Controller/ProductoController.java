@@ -37,42 +37,6 @@ public class ProductoController {
 
     @GetMapping("/aleatorios")
     public ResponseEntity<Map<String, List<?>>> obtenerProductosAleatorios() {
-        List<Hotel> hotelesAleatorios = hotelRepository.findByOrderByIdDesc();
-        List<HotelDTO> hotelesDTO = hotelesAleatorios.stream()
-                .map(hotel -> {
-                     HotelDTO h = new HotelDTO();
-                     h.setId(hotel.getId());
-                     h.setNombre(hotel.getNombre());
-                     h.setDescripcion(hotel.getDescripcion());
-                     h.setPrecio(hotel.getPrecio());
-                     h.setNombreHotel(hotel.getNombreHotel());
-                     h.setNit(hotel.getNit());
-                     h.setDireccion(hotel.getDireccion());
-                     h.setTelefono(hotel.getTelefono());
-                     h.setCategoria(hotel.getCategoria());
-                     h.setUrlWeb(hotel.getUrlWeb());
-                     List<ImagenDTO> imagenes= getImages(hotel.getImagenes());
-                     h.setImagenes(imagenes);
-
-                    return h;
-                }) // Crear DTOs a partir de las entidades
-                .collect(Collectors.toList());
-
-        List<Vuelo> vuelosAleatorios = vueloRepository.findByOrderByIdDesc();
-        List<VueloDTO> vuelosDTO = vuelosAleatorios.stream()
-                .map(vuelo -> {
-                    VueloDTO h = new VueloDTO();
-                    h.setId(vuelo.getId());
-                    h.setAerolinea(vuelo.getAerolinea());
-                    h.setOrigen(vuelo.getOrigen());
-                    h.setFechaSalida(vuelo.getFechaSalida());
-                    h.setFechaLlegada(vuelo.getFechaLlegada());
-                    List<ImagenDTO> imagenes= getImages(vuelo.getImagenesUrl());
-                    h.setImagenes(imagenes);
-
-                    return h;
-                }) // Crear DTOs a partir de las entidades
-                .collect(Collectors.toList());
         List<Excursion> excursionesAleatorias = excursionRepository.findByOrderByIdAsc();
         List<ExcursionDTO> excursionesDTO = excursionesAleatorias.stream()
                 .map(excursion -> {
@@ -93,8 +57,6 @@ public class ProductoController {
                 .collect(Collectors.toList());
 
         Map<String, List<?>> respuesta = new HashMap<>();
-        respuesta.put("hoteles", hotelesDTO);
-        respuesta.put("vuelos", vuelosDTO);
         respuesta.put("excursiones", excursionesDTO);
 
         return ResponseEntity.ok(respuesta);

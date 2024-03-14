@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Data
 public class AwsProperties {
 
-    private String accessKey = "AKIAW3MEEYJ3QAQIGXHF";
-    private String secretKey = "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";
+    private String accessKey = "AKIAW3MEEYJ3Y5IYLRUT";
+    private String secretKey = "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";
 
 }

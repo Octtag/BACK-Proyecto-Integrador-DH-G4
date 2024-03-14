@@ -57,9 +57,9 @@ public class AwsService {
 
         byte[] imageData = imageFile.getBytes();
 
-        saverToS3.saveToS3(imageData, "simplepassbucket", objectKey);
+        saverToS3.saveToS3(imageData, "destinoviajes2024", objectKey);
 
-        String url = "https://simplepassbucket.s3.amazonaws.com/" + objectKey;
+        String url = "https://destinoviajes2024.s3.amazonaws.com/" + objectKey;
         return url;
     }
 }

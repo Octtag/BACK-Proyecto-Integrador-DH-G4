@@ -1,11 +1,14 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "Paises")
+@Data
 public class Pais {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
