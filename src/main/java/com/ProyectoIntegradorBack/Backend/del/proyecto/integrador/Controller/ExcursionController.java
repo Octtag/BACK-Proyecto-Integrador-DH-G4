@@ -39,9 +39,7 @@ public class ExcursionController {
     @Autowired
     private CompraRepository compraRepository;
     @Autowired
-    private PaisService paisService;
-    @Autowired
-    private CiudadService ciudadService;
+    private CategoriaRepository categoriaRepository;
 
     @Autowired
     public ExcursionController(ExcursionService excursionService, AwsService awsService) {
@@ -102,4 +100,14 @@ public class ExcursionController {
         return ResponseEntity.ok().body(resultado);
     }
 
+    /*
+    @PutMapping("/agregarAFavoritos")
+    public ResponseEntity<Excursion> agregarAFavoritos(@RequestBody ExcursionDTO excursionDTO) throws IOException {
+        Excursion excursion = excursionService.findById( Long.valueOf(excursionDTO.getId().intValue()));
+       // excursion.setEsFavorito(excursionDTO.getEsFavorito());
+
+        excursionService.actualizarExcursion(nuevaExcursion);
+        return new ResponseEntity<>(excursion, HttpStatus.CREATED);
+    }
+    */
 }

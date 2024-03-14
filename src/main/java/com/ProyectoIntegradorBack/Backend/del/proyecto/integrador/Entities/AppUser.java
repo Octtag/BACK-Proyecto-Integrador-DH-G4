@@ -34,10 +34,6 @@ public class AppUser implements UserDetails {
     @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Vuelo> vuelosALaVenta;
 
-    // Productos vendidos por el usuario
-    @OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Excursion> excursionesALaVenta;
-
     // Productos comprados por el usuario
     @OneToMany(mappedBy = "comprador", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Compra> comprasRealizadas;

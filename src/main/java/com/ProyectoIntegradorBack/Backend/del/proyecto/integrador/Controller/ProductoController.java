@@ -4,22 +4,14 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.Excursion
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.HotelDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.VueloDTO;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Hotel;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Imagen;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Vuelo;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.ExcursionRepository;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.HotelRepository;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.VueloRepository;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,8 +27,16 @@ public class ProductoController {
     @Autowired
     private ExcursionRepository excursionRepository;
 
+    @Autowired
+    private FavoritoRepository favoritoRepository;
+
+
+    @Autowired
+    private AppUserRepository appUserRepository;
+
     @GetMapping("/aleatorios")
-    public ResponseEntity<Map<String, List<?>>> obtenerProductosAleatorios() {
+    public ResponseEntity<Map<String, List<?>>> obtenerProductosAleatorios(@RequestParam(required = false) String userName, @RequestParam(required = false) Boolean isFavorite) {
+
         List<Excursion> excursionesAleatorias = excursionRepository.findByOrderByIdAsc();
         List<ExcursionDTO> excursionesDTO = excursionesAleatorias.stream()
                 .map(excursion -> {
@@ -49,12 +49,32 @@ public class ProductoController {
                     h.setFechaInicio(excursion.getFechaInicio());
                     h.setFechaFin(excursion.getFechaFin());
                     h.setItinerario(excursion.getItinerario());
+                    h.setIdCategoria(excursion.getCategoria().getId());
+
                     List<ImagenDTO> imagenes= getImages(excursion.getImagenes());
                     h.setImagenes(imagenes);
 
                     return h;
                 }) // Crear DTOs a partir de las entidades
                 .collect(Collectors.toList());
+
+        if(userName != null){
+            Optional<AppUser> user = appUserRepository.findByUsername(userName);
+            List<Favorito> favoritos = favoritoRepository.findAllByIdUser(user.get().getId());
+
+            for(ExcursionDTO excursionDTO: excursionesDTO){
+                Optional<Favorito> favorito = favoritos.stream().filter(i -> i.getExcursion().getId().equals(excursionDTO.getId())).findFirst();
+                if(favorito.isPresent()){
+                    excursionDTO.setEsFavorito(true);
+                }else{
+                    excursionDTO.setEsFavorito(false);
+                }
+            }
+
+            if(isFavorite != null){
+                excursionesDTO = excursionesDTO.stream().filter(i -> i.getEsFavorito()).toList();
+            }
+        }
 
         Map<String, List<?>> respuesta = new HashMap<>();
         respuesta.put("excursiones", excursionesDTO);

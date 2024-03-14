@@ -17,9 +17,6 @@ public class Excursion extends Producto {
     private LocalDateTime fechaFin;
     private String itinerario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "compra_id")
-    private Compra compra;
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
@@ -34,13 +31,14 @@ public class Excursion extends Producto {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad")
-    private Ciudad ciudad; // Relación con la entidad Ciudad.
+    private Ciudad ciudad;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoria;
 
     public Excursion() {
     }
-
-
 
     @Override
     public String toString() {
