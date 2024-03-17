@@ -18,7 +18,7 @@ public class CorsConfig {
         // Cambia esto para reflejar el origen de tu frontend
         corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:3001", "http://localhost:5173" ));
         // Asegúrate de incluir "PUT" o "PATCH" si tu aplicación los necesita
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS", "PATCH"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));
         corsConfiguration.setAllowCredentials(true); // Si necesitas enviar cookies o headers de autorización
 

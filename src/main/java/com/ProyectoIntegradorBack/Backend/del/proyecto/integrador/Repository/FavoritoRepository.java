@@ -2,6 +2,7 @@ package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Favorito;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Imagen;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +26,7 @@ public interface FavoritoRepository extends JpaRepository<Favorito, Long> {
     List<Favorito> findTop1ByIdUserAndIdExcursion(Long idUser, Long idExcursion);
 
 
+    List<Favorito> findByExcursionId(Long excursionId);
 
 }
 

@@ -1,6 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.AppUser;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Categoria;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Excursion;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.ExcursionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,4 +39,8 @@ public class ExcursionService {
     }
 
 
+    @Transactional
+    public void eliminarExcursion(Excursion excurcion) {
+        excursionRepository.delete(excurcion);
+    }
 }

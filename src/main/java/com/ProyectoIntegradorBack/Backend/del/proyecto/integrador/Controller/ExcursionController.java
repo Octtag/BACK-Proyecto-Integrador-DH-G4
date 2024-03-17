@@ -40,6 +40,8 @@ public class ExcursionController {
     private CompraRepository compraRepository;
     @Autowired
     private CategoriaRepository categoriaRepository;
+    @Autowired
+    private FavoritoRepository favoritoRepository;
 
     @Autowired
     public ExcursionController(ExcursionService excursionService, AwsService awsService) {
@@ -100,14 +102,37 @@ public class ExcursionController {
         return ResponseEntity.ok().body(resultado);
     }
 
-    /*
-    @PutMapping("/agregarAFavoritos")
-    public ResponseEntity<Excursion> agregarAFavoritos(@RequestBody ExcursionDTO excursionDTO) throws IOException {
-        Excursion excursion = excursionService.findById( Long.valueOf(excursionDTO.getId().intValue()));
-       // excursion.setEsFavorito(excursionDTO.getEsFavorito());
 
-        excursionService.actualizarExcursion(nuevaExcursion);
-        return new ResponseEntity<>(excursion, HttpStatus.CREATED);
+    @DeleteMapping("/eliminarExcursion")
+    public ResponseEntity<String> eliminarExcursion(@RequestParam Long excursionId) throws IOException {
+        Excursion excursion = excursionService.findById(excursionId);
+        List<Imagen> imagenes = imagenRepository.findByExcursionId(excursionId);
+        List<Favorito> favoritos = favoritoRepository.findByExcursionId(excursionId);
+        for(Imagen i : imagenes){
+            imagenRepository.delete(i);
+        }
+        for(Favorito f : favoritos){
+            favoritoRepository.delete(f);
+        }
+        excursionService.eliminarExcursion(excursion);
+        return new ResponseEntity<>("La excursión, imagenes y favoritos relacionados, se borraron con exito", HttpStatus.OK);
     }
-    */
+
+    @PatchMapping("/actualizarCategoriaExcursion")
+    public ResponseEntity<String> actualizarCategoriaExcursion(
+            @RequestParam("id") Long id,
+            @RequestParam("idCategoria") Long idCategoria) throws IOException {
+        try {
+            Excursion excursion = excursionService.findById(id);
+            Optional<Categoria> categoria = categoriaRepository.findById(idCategoria);
+            if(categoria.isPresent()) {
+                excursion.setCategoria(categoria.orElse(new Categoria()));
+            }
+            excursionService.guardarExcursion(excursion);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al editar la excursión: " + e.getMessage());
+        }
+        return ResponseEntity.ok().body("La categoría de la excursion solicitada, se modifico correctamente");
+    }
+
 }

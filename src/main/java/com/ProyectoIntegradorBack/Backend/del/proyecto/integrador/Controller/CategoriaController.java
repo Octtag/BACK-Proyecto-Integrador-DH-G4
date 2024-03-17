@@ -5,7 +5,7 @@ import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.HotelDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.VueloDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.CategoriaRepository;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.CategoriaService;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.ExcursionService;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.HotelService;
@@ -29,6 +29,14 @@ public class CategoriaController {
     @Autowired
     private CategoriaRepository categoriaRepository;
     private final CategoriaService categoriaService;
+    @Autowired
+    private ExcursionRepository excursionRepository;
+
+    @Autowired
+    private ImagenRepository imagenRepository;
+    @Autowired
+    private FavoritoRepository favoritoRepository;
+
 
     @Autowired
     public CategoriaController(CategoriaService categoriaService) {
@@ -50,8 +58,21 @@ public class CategoriaController {
     @DeleteMapping("/eliminarCategoria")
     public ResponseEntity<Categoria> eliminarCategoria(@RequestBody Categoria categoria) throws IOException {
         Categoria categoriaEncontrada = categoriaService.findById(categoria.getId());
+        List<Excursion> excursiones = excursionRepository.findByCategoriaId(categoria.getId());
+        for(Excursion e : excursiones){
+            List<Imagen> imagenes = imagenRepository.findByExcursionId(e.getId());
+            List<Favorito> favoritos = favoritoRepository.findByExcursionId(e.getId());
+            for(Imagen i : imagenes){
+                imagenRepository.delete(i);
+            }
+            for(Favorito f : favoritos){
+                favoritoRepository.delete(f);
+            }
+            excursionRepository.delete(e);
+        }
+
         categoriaService.borrarCategoria(categoriaEncontrada);
-        return new ResponseEntity<>(categoriaEncontrada, HttpStatus.CREATED);
+        return new ResponseEntity<>(categoriaEncontrada, HttpStatus.OK);
     }
 
 }

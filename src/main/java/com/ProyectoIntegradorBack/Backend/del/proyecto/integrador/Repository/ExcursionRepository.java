@@ -19,6 +19,9 @@ public interface ExcursionRepository extends JpaRepository<Excursion, Long> {
     Excursion findTop1ByOrderByIdDesc();
 
     Optional<Excursion> findByNombre(String nombre);
+    Optional<Excursion> findById(Long id);
+
+    List<Excursion> findByCategoriaId(Long categoriaId);
 
 }
 
