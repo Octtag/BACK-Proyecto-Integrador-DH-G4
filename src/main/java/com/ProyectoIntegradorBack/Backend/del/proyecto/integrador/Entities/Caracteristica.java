@@ -16,7 +16,10 @@ public class Caracteristica{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String tipo;
-    private String Icono;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "icono_id", nullable = false)
+    private Icon icon;
+
     public Caracteristica() {
     }
 }

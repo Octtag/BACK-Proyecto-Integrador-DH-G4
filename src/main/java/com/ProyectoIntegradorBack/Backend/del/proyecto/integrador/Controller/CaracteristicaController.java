@@ -1,5 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.CaracteristicaDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.CaracteristicaService;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,6 +20,8 @@ public class CaracteristicaController {
 
     @Autowired
     private CaracteristicaExcursionRepository caracteristicaExcursionRepository;
+    @Autowired
+    private IconRepository iconRepository;
     private final CaracteristicaService caracteristicaService;
     @Autowired
     private ExcursionRepository excursionRepository;
@@ -34,15 +38,35 @@ public class CaracteristicaController {
     }
 
     @GetMapping("/obtenerCaracteristicas")
-    public ResponseEntity<List<Caracteristica>> obtenerCaracteristicas() {
+    public ResponseEntity<List<CaracteristicaDTO>> obtenerCaracteristicas() {
         List<Caracteristica> caracteristicas = caracteristicaService.findByOrderByIdAsc();
-        return ResponseEntity.ok(caracteristicas);
+        List<CaracteristicaDTO> caracteristicasDTO = new ArrayList<>();
+        for(Caracteristica c : caracteristicas){
+            CaracteristicaDTO caracteristicaDTO = new CaracteristicaDTO();
+            caracteristicaDTO.setId(c.getId());
+            caracteristicaDTO.setTipo(c.getTipo());
+            caracteristicaDTO.setIcono(c.getIcon().getIcono());
+
+            caracteristicasDTO.add(caracteristicaDTO);
+        }
+        System.out.println("DTO"+caracteristicasDTO);
+        return ResponseEntity.ok(caracteristicasDTO);
+    }
+    @GetMapping("/obtenerIconos")
+    public ResponseEntity<List<Icon>> obtenerIconos() {
+        List<Icon> iconos = iconRepository.findByOrderByIdAsc();
+        return ResponseEntity.ok(iconos);
     }
 
     @PostMapping("/crearCaracteristica")
-    public ResponseEntity<Caracteristica> crearCaracteristica(@RequestBody Caracteristica caracteristica) throws IOException {
-        Caracteristica resultado = caracteristicaService.guardarCaracteristica(caracteristica);
-        return new ResponseEntity<>(resultado, HttpStatus.CREATED);
+    public ResponseEntity<String> crearCaracteristica(@RequestParam Long idIcon,@RequestParam String nombre) throws IOException {
+        Caracteristica caracteristica1 = new Caracteristica();
+        caracteristica1.setTipo(nombre);
+        Icon icon = iconRepository.getById(idIcon);
+        caracteristica1.setIcon(icon);
+        caracteristicaService.guardarCaracteristica(caracteristica1);
+
+        return new ResponseEntity<>("Se creo la característica correctamente", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/eliminarCaracteristica")

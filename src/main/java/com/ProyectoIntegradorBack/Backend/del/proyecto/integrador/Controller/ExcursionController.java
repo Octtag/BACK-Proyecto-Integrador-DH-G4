@@ -1,5 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.CaracteristicaDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ExcursionDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
@@ -136,12 +137,12 @@ public class ExcursionController {
     public ResponseEntity<ExcursionDTO> obtenerExcursion(@RequestParam(required = false) String userName, @RequestParam(required = false) Long id) {
         Excursion excursion = excursionService.findById(id);
         ExcursionDTO excursionDTO = new ExcursionDTO();
-        List<Caracteristica> caracteristicas = new ArrayList<>();
+        List<CaracteristicaDTO> caracteristicas = new ArrayList<>();
         for (CaracteristicaExcursion ce : excursion.getCaracteristicaExcursions()) {
-            Caracteristica c = new Caracteristica();
+            CaracteristicaDTO c = new CaracteristicaDTO();
             c.setId(ce.getId());
             c.setTipo(ce.getCaracteristica().getTipo());
-            c.setIcono(ce.getCaracteristica().getIcono());
+            c.setIcono(ce.getCaracteristica().getIcon().getIcono());
             caracteristicas.add(c);
         }
         excursionDTO.setCaracteristicas(caracteristicas);

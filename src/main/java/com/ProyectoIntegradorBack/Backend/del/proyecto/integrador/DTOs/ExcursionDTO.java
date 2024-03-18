@@ -21,7 +21,7 @@ public class ExcursionDTO {
     private Long idCategoria;
     private Boolean esFavorito;
     private List<ImagenDTO> imagenes;
-    private List<Caracteristica> caracteristicas;
+    private List<CaracteristicaDTO> caracteristicas;
 
 }
 
