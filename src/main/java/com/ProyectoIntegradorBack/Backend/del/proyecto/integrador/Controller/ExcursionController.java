@@ -1,6 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ExcursionDTO;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Service.CiudadService;
@@ -17,15 +18,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/excursiones")
 public class ExcursionController {
-
-
     private final ExcursionService excursionService;
     private final AwsService awsService;
     @Autowired
@@ -42,7 +40,6 @@ public class ExcursionController {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private FavoritoRepository favoritoRepository;
-
     @Autowired
     public ExcursionController(ExcursionService excursionService, AwsService awsService) {
         this.excursionService = excursionService;
@@ -134,5 +131,45 @@ public class ExcursionController {
         }
         return ResponseEntity.ok().body("La categoría de la excursion solicitada, se modifico correctamente");
     }
+
+    @GetMapping("/obtenerExcursion")
+    public ResponseEntity<ExcursionDTO> obtenerExcursion(@RequestParam(required = false) String userName, @RequestParam(required = false) Long id) {
+        Excursion excursion = excursionService.findById(id);
+        ExcursionDTO excursionDTO = new ExcursionDTO();
+        List<Caracteristica> caracteristicas = new ArrayList<>();
+        for (CaracteristicaExcursion ce : excursion.getCaracteristicaExcursions()) {
+            Caracteristica c = new Caracteristica();
+            c.setId(ce.getId());
+            c.setTipo(ce.getCaracteristica().getTipo());
+            c.setIcono(ce.getCaracteristica().getIcono());
+            caracteristicas.add(c);
+        }
+        excursionDTO.setCaracteristicas(caracteristicas);
+
+        System.out.println("CARACTERISTICAS: "+excursionDTO);
+        excursionDTO.setId(excursion.getId());
+        excursionDTO.setNombre(excursion.getNombre());
+        excursionDTO.setDescripcion(excursion.getDescripcion());
+        excursionDTO.setDestino(excursion.getDestino());
+        excursionDTO.setPrecio(excursion.getPrecio());
+        excursionDTO.setFechaInicio(excursion.getFechaInicio());
+        excursionDTO.setFechaFin(excursion.getFechaFin());
+        excursionDTO.setItinerario(excursion.getItinerario());
+        excursionDTO.setIdCategoria(excursion.getCategoria().getId());
+
+        List<ImagenDTO> imagenes = new ArrayList<>();
+        for (Imagen file : excursion.getImagenes()) {
+            if (file != null) {
+                ImagenDTO imagen = new ImagenDTO();
+                imagen.setId(file.getId());
+                imagen.setUrl(file.getUrl());
+                imagenes.add(imagen);
+            }
+        }
+        excursionDTO.setImagenes(imagenes);
+
+        return ResponseEntity.ok(excursionDTO);
+    }
+
 
 }

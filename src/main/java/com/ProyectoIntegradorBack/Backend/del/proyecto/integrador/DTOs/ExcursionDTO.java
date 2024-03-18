@@ -1,5 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs;
 
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Caracteristica;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.Imagen;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +21,7 @@ public class ExcursionDTO {
     private Long idCategoria;
     private Boolean esFavorito;
     private List<ImagenDTO> imagenes;
+    private List<Caracteristica> caracteristicas;
 
 }
 

@@ -17,6 +17,8 @@ public class Excursion extends Producto {
     private LocalDateTime fechaFin;
     private String itinerario;
 
+    @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CaracteristicaExcursion> caracteristicaExcursions;
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
@@ -36,6 +38,7 @@ public class Excursion extends Producto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
+
 
     public Excursion() {
     }
