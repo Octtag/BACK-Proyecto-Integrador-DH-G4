@@ -69,8 +69,19 @@ public class CaracteristicaController {
         return new ResponseEntity<>("Se creo la característica correctamente", HttpStatus.CREATED);
     }
 
+    @PatchMapping("/actualizarCaracteristica")
+    public ResponseEntity<String> actualirzaCaracteristica(@RequestBody CaracteristicaDTO caracteristica) throws IOException {
+        Caracteristica caracteristica1 = caracteristicaService.findById(caracteristica.getId());
+        caracteristica1.setTipo(caracteristica.getTipo());
+        Icon icon = iconRepository.getById(Long.valueOf(caracteristica.getIcono()));
+        caracteristica1.setIcon(icon);
+        caracteristicaService.guardarCaracteristica(caracteristica1);
+
+        return new ResponseEntity<>("Se actualizo la característica correctamente", HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/eliminarCaracteristica")
-    public ResponseEntity<Caracteristica> eliminarCaracteristica(@RequestParam Long id) throws IOException {
+    public ResponseEntity<String> eliminarCaracteristica(@RequestParam Long id) throws IOException {
         Caracteristica categoriaEncontrada = caracteristicaService.findById(id);
         List<CaracteristicaExcursion> caracteristicaExcursions = caracteristicaExcursionRepository.findAllByIdCaracteristica(id);
         for(CaracteristicaExcursion ce : caracteristicaExcursions){
@@ -78,7 +89,7 @@ public class CaracteristicaController {
         }
 
         caracteristicaService.borrarCategoria(categoriaEncontrada);
-        return new ResponseEntity<>(categoriaEncontrada, HttpStatus.OK);
+        return new ResponseEntity<>("La característica se elimino correctamente", HttpStatus.OK);
     }
 
 }

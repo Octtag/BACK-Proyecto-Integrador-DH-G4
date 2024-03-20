@@ -91,6 +91,14 @@ public class AppUserController {
         String nombreCompleto;
         try {
             AppUser appUser = appUserService.findByEmail(authenticationRequest.getEmail()).get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            boolean esPasswordValido = encoder.matches(authenticationRequest.getPassword(),appUser.getPassword());
+
+            if(!esPasswordValido){
+                return ResponseEntity
+                        .status(HttpStatus.BAD_REQUEST)
+                        .body("Los datos no son validos");
+            }
             rol = String.valueOf(appUser.getRol());
             nombreCompleto =  appUser.getNombre() + ' ' + appUser.getApellido();
 

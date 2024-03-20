@@ -44,7 +44,7 @@ public class FavoritoController {
 
 
     @PostMapping("/crearFavorito")
-    public ResponseEntity<Favorito> crearFavorito(@RequestBody FavoritoDTO favoritoDTO) throws IOException {
+    public ResponseEntity<String> crearFavorito(@RequestBody FavoritoDTO favoritoDTO) throws IOException {
         Optional<Excursion> excursion = excursionRepository.findById(favoritoDTO.getIdExcursion());
         Optional<AppUser> user = appUserRepository.findByUsername(favoritoDTO.getUserName());
         Favorito favorito = new Favorito();
@@ -55,7 +55,7 @@ public class FavoritoController {
 
             favoritoService.crearFavorito(favorito);
         }
-        return new ResponseEntity<>(favorito, HttpStatus.CREATED);
+        return new ResponseEntity<>("Se adiciono correctamente el favorito ", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/borrarFavorito")

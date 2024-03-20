@@ -24,14 +24,6 @@ public class Excursion extends Producto {
     private List<Imagen> imagenes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vendedor_id")
-    private AppUser vendedor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_pais")
-    private Pais pais;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;
 

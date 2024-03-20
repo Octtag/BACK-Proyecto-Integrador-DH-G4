@@ -1,6 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.CaracteristicaDTO;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.CiudadDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ExcursionDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
@@ -28,6 +29,8 @@ public class ExcursionController {
     private final ExcursionService excursionService;
     private final AwsService awsService;
     @Autowired
+    private CaracteristicaRepository caracteristicaRepository;
+    @Autowired
     private CiudadRepository ciudadRepository;
     @Autowired
     private PaisRepository paisRepository;
@@ -48,20 +51,27 @@ public class ExcursionController {
     }
 
     @PostMapping("/crearExcursion")
-    public ResponseEntity<?> crearExcursion(
+    public ResponseEntity<String> crearExcursion(
             @RequestParam("nombre") String nombre,
+            @RequestParam("categoria") Long categoria,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("precio") double precio,
+            @RequestParam("caracteristicas") List<String> caracteristicas,
             @RequestParam("destino") String destino,
-            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaInicio,
-            @RequestParam("fechaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime fechaFin,
+            @RequestParam("fechaInicio") String fechaI,
+            @RequestParam("fechaFin") String fechaF,
             @RequestParam("itinerario") String itinerario,
             @RequestParam("imagenes") MultipartFile[] imagenes) throws IOException {
+
+        LocalDateTime fechaInicio = LocalDateTime.parse(fechaI);
+        LocalDateTime fechaFin = LocalDateTime.parse(fechaF);
 
         Excursion resultado;
        try {
            Excursion nuevaExcursion = new Excursion();
            Excursion lastExcursion = excursionService.getLastExcursion();
+           Categoria categoria1 = categoriaRepository.getById(categoria);
+
            Long id;
            if (lastExcursion != null) {
                id = lastExcursion.getId() + 1L;
@@ -72,9 +82,8 @@ public class ExcursionController {
            nuevaExcursion.setNombre(nombre);
            nuevaExcursion.setDescripcion(descripcion);
            nuevaExcursion.setPrecio(precio);
-           if (destino != null) {
-               nuevaExcursion.setDestino(destino);
-           }
+           nuevaExcursion.setCategoria(categoria1);
+           nuevaExcursion.setDestino(destino);
            nuevaExcursion.setFechaInicio(fechaInicio);
            nuevaExcursion.setFechaFin(fechaFin);
            nuevaExcursion.setItinerario(itinerario);
@@ -87,17 +96,84 @@ public class ExcursionController {
                    imagen.setUrl(imageUrl);
                    listaImagenes.add(imagen);
                    imagen.setExcursion(nuevaExcursion);
-                   imagenRepository.save(imagen);
                }
            }
            nuevaExcursion.setImagenes(listaImagenes);
+
+           List<CaracteristicaExcursion> caracteristicaList = new ArrayList<>();
+           for(String idC : caracteristicas){
+               CaracteristicaExcursion caracteristicaExcursion = new CaracteristicaExcursion();
+               caracteristicaExcursion.setExcursion(nuevaExcursion.getId());
+               caracteristicaExcursion.setCaracteristica(caracteristicaRepository.getByTipo(idC));
+               caracteristicaList.add(caracteristicaExcursion);
+           }
+           nuevaExcursion.setCaracteristicaExcursions(caracteristicaList);
 
            resultado = excursionService.guardarExcursion(nuevaExcursion);
        } catch (Exception e) {
            // Uso de ResponseEntity.badRequest() para devolver un mensaje de error y el stacktrace del error
            return ResponseEntity.badRequest().body("Error al crear la excursión: " + e.getMessage());
        }
-        return ResponseEntity.ok().body(resultado);
+        return ResponseEntity.ok("Excursión creada con exito");
+    }
+
+    @PutMapping("/actualizarExcursion")
+    public ResponseEntity<String> actualizarExcursion(
+            @RequestParam("id") Long idExcursion,
+            @RequestParam("nombre") String nombre,
+            @RequestParam("categoria") Long categoria,
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("precio") double precio,
+            @RequestParam("caracteristicas") List<String> caracteristicas,
+            @RequestParam("fechaInicio") String fechaI,
+            @RequestParam("fechaFin") String fechaF,
+            @RequestParam("itinerario") String itinerario,
+            @RequestParam("imagenes") MultipartFile[] imagenes) throws IOException {
+
+        LocalDateTime fechaInicio = LocalDateTime.parse(fechaI);
+        LocalDateTime fechaFin = LocalDateTime.parse(fechaF);
+
+        Excursion nuevaExcursion = excursionService.findById(idExcursion);
+        try {
+            Categoria categoria1 = categoriaRepository.getById(categoria);
+            nuevaExcursion.setNombre(nombre);
+            nuevaExcursion.setDescripcion(descripcion);
+            nuevaExcursion.setPrecio(precio);
+            nuevaExcursion.setCategoria(categoria1);
+            nuevaExcursion.setFechaInicio(fechaInicio);
+            nuevaExcursion.setFechaFin(fechaFin);
+            nuevaExcursion.setItinerario(itinerario);
+
+            List<Imagen> listaImagenes = nuevaExcursion.getImagenes();
+            listaImagenes.clear();
+
+            for (MultipartFile file : imagenes) {
+                if (!file.isEmpty()) {
+                    String imageUrl = awsService.uploadEventImage(file);
+                    Imagen imagen = new Imagen();
+                    imagen.setUrl(imageUrl);
+                    listaImagenes.add(imagen);
+                    imagen.setExcursion(nuevaExcursion);
+                }
+            }
+            nuevaExcursion.setImagenes(listaImagenes);
+
+            List<CaracteristicaExcursion> caracteristicasExistentes = nuevaExcursion.getCaracteristicaExcursions();
+            caracteristicasExistentes.clear(); // Eliminar todas las caracteristicas existentes
+
+            for(String idC : caracteristicas){
+                CaracteristicaExcursion caracteristicaExcursion = new CaracteristicaExcursion();
+                caracteristicaExcursion.setExcursion(nuevaExcursion.getId());
+                caracteristicaExcursion.setCaracteristica(caracteristicaRepository.getByTipo(idC));
+                caracteristicasExistentes.add(caracteristicaExcursion);
+            }
+            nuevaExcursion.setCaracteristicaExcursions(caracteristicasExistentes);
+
+           excursionService.guardarExcursion(nuevaExcursion);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al modificar la excursión: " + e.getMessage());
+        }
+        return ResponseEntity.ok("Excursión modifica con exito");
     }
 
 
@@ -172,5 +248,19 @@ public class ExcursionController {
         return ResponseEntity.ok(excursionDTO);
     }
 
+    @GetMapping("/obtenerCiudades")
+    public ResponseEntity<List<CiudadDTO>> obtenerCiudades() {
+        List<Ciudad> ciudades = ciudadRepository.findAll();
+        List<CiudadDTO> ciudadesDTO = new ArrayList<>();
+        for(Ciudad c : ciudades){
+            CiudadDTO ciudadDTO = new CiudadDTO();
+            ciudadDTO.setId(c.getId());
+            ciudadDTO.setNombreCiudad(c.getNombreCiudad());
+            ciudadDTO.setZipCode(c.getZipCode());
+            ciudadDTO.setPais(c.getPais().getNombrePais());
+            ciudadesDTO.add(ciudadDTO);
+        }
+        return ResponseEntity.ok(ciudadesDTO);
+    }
 
 }

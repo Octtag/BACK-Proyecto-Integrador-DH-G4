@@ -16,5 +16,7 @@ import java.util.List;
 public interface CaracteristicaRepository extends JpaRepository<Caracteristica, Long> {
 
     List<Caracteristica> findByOrderByIdAsc();
+
+    Caracteristica getByTipo(String tipo);
 }
 

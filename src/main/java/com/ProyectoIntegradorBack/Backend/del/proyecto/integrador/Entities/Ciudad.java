@@ -29,6 +29,7 @@ public class Ciudad {
                 "id=" + id +
                 ", nombreCiudad='" + nombreCiudad + '\'' +
                 ", zipCode='" + zipCode + '\'' +
+                ", id_pais='" + pais.getId() + '\'' +
                 '}';
     }
 

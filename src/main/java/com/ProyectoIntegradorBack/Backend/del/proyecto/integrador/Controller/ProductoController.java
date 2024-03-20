@@ -1,9 +1,6 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller;
 
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ExcursionDTO;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.HotelDTO;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ImagenDTO;
-import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.VueloDTO;
+import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities.*;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +47,15 @@ public class ProductoController {
                     h.setFechaFin(excursion.getFechaFin());
                     h.setItinerario(excursion.getItinerario());
                     h.setIdCategoria(excursion.getCategoria().getId());
+                    List<CaracteristicaDTO> caracteristicaDTOS = new ArrayList<>();
+                    for(CaracteristicaExcursion ce : excursion.getCaracteristicaExcursions()){
+                        CaracteristicaDTO caracteristicaDTO = new CaracteristicaDTO();
+                        caracteristicaDTO.setIcono(ce.getCaracteristica().getIcon().getIcono());
+                        caracteristicaDTO.setTipo(ce.getCaracteristica().getTipo());
+                        caracteristicaDTO.setId(ce.getCaracteristica().getId());
+                        caracteristicaDTOS.add(caracteristicaDTO);
+                    }
+                    h.setCaracteristicas(caracteristicaDTOS);
 
                     List<ImagenDTO> imagenes= getImages(excursion.getImagenes());
                     h.setImagenes(imagenes);
