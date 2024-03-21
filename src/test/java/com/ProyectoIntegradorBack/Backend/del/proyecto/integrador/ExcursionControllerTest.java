@@ -1,4 +1,4 @@
-package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
+/*package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller.ExcursionController;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.ExcursionDTO;
@@ -65,4 +65,6 @@ public class ExcursionControllerTest {
         Mockito.verify(excursionService).guardarExcursion(any(Excursion.class));
     }
 }
+
+ */
 

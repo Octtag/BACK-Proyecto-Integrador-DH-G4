@@ -29,8 +29,6 @@ public class ProductoController {
 
     @Autowired
     private FavoritoRepository favoritoRepository;
-
-
     @Autowired
     private AppUserRepository appUserRepository;
 
@@ -49,8 +47,10 @@ public class ProductoController {
                     h.setFechaInicio(excursion.getFechaInicio());
                     h.setFechaFin(excursion.getFechaFin());
                     h.setItinerario(excursion.getItinerario());
-                    h.setIdCategoria(excursion.getCategoria().getId());
 
+                    if (excursion.getCategoria() != null){
+                        h.setIdCategoria(excursion.getCategoria().getId());
+                    }
                     List<ImagenDTO> imagenes= getImages(excursion.getImagenes());
                     h.setImagenes(imagenes);
 

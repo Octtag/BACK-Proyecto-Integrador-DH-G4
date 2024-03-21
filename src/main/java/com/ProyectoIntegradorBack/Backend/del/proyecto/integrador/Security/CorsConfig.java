@@ -16,7 +16,7 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         // Cambia esto para reflejar el origen de tu frontend
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:3001", "http://localhost:5173" ));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://localhost:3001", "http://localhost:5173","http://front-destinos.s3-website-us-east-1.amazonaws.com","http://front-destinos.s3-website-us-east-1.amazonaws.com/" ));
         // Asegúrate de incluir "PUT" o "PATCH" si tu aplicación los necesita
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("*"));

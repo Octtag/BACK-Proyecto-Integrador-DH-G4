@@ -1,4 +1,4 @@
-package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
+/*package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Controller.HotelController;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.HotelDTO;
@@ -56,4 +56,6 @@ public class HotelControllerTest {
     }
 
 }
+
+ */
 

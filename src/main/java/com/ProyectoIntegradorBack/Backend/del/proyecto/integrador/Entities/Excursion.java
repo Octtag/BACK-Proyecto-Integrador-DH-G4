@@ -1,5 +1,7 @@
 package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -19,22 +21,27 @@ public class Excursion extends Producto {
 
 
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Imagen> imagenes;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vendedor_id")
+    @JsonIgnore
     private AppUser vendedor;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pais")
+    @JsonIgnore
     private Pais pais;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad")
+    @JsonIgnore
     private Ciudad ciudad;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id", nullable = false)
+    @JoinColumn(name = "categoria_id", nullable = true)
+    @JsonIgnore
     private Categoria categoria;
 
     public Excursion() {

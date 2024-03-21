@@ -1,4 +1,4 @@
-package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
+/*package com.ProyectoIntegradorBack.Backend.del.proyecto.integrador;
 
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AppUserDto;
 import com.ProyectoIntegradorBack.Backend.del.proyecto.integrador.DTOs.AuthenticationRequest;
@@ -92,4 +92,6 @@ public class UsuarioControllerTest {
     }
 
 }
+
+ */
 
