@@ -23,6 +23,9 @@ public class Excursion extends Producto {
     @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Imagen> imagenes;
 
+    @OneToMany(mappedBy = "excursion", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comentario> comentarios;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_ciudad")
     private Ciudad ciudad;

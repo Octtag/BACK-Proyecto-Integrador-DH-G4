@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 
+    private final AwsService awsService;
     @Autowired
     private CategoriaRepository categoriaRepository;
     private final CategoriaService categoriaService;
@@ -39,8 +41,9 @@ public class CategoriaController {
 
 
     @Autowired
-    public CategoriaController(CategoriaService categoriaService) {
+    public CategoriaController(CategoriaService categoriaService, AwsService awsService) {
         this.categoriaService = categoriaService;
+        this.awsService = awsService;
     }
 
     @GetMapping("/obtenerCategorias")
@@ -49,10 +52,35 @@ public class CategoriaController {
         return ResponseEntity.ok(categorias);
     }
 
+    @PostMapping("/crearImagenes")
+    public ResponseEntity<String> crearImagenes(@RequestParam("files") MultipartFile[] files) throws IOException {
+        System.out.println("se reciben imagenesssssss"+files);
+        List<Imagen> listaImagenes = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                String imageUrl = awsService.uploadEventImage(file);
+                Imagen imagen = new Imagen();
+                System.out.println("url"+imageUrl);
+
+                imagen.setUrl(imageUrl);
+                listaImagenes.add(imagen);
+            }
+        }
+        return new ResponseEntity<>("La categoría se creo exitosamente", HttpStatus.CREATED);
+    }
     @PostMapping("/crearCategoria")
-    public ResponseEntity<Categoria> crearCategoria(@RequestBody Categoria categoria) throws IOException {
-        Categoria resultado = categoriaService.guardarCategoria(categoria);
-        return new ResponseEntity<>(resultado, HttpStatus.CREATED);
+    public ResponseEntity<String> crearCategoria(@RequestParam("nombreCategoria") String nombreCategoria,
+                                                 @RequestParam("descripcionCategoria") String descripcionCategoria,
+                                                 @RequestParam("file") MultipartFile file) throws IOException {
+        Categoria categoria = new Categoria();
+        categoria.setNombreCategoria(nombreCategoria);
+        categoria.setDescripcionCategoria(descripcionCategoria);
+        if (!file.isEmpty()) {
+            String imageUrl = awsService.uploadEventImage(file);
+            categoria.setImageURL(imageUrl);
+        }
+        categoriaService.guardarCategoria(categoria);
+        return new ResponseEntity<>("La categoría se creo exitosamente", HttpStatus.CREATED);
     }
 
     @DeleteMapping("/eliminarCategoria")
